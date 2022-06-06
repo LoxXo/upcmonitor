@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def scrap_downstream(html_down):
-    with open(html_down, "rb") as down:
-        soup_down = BeautifulSoup(down, "lxml")
+def scrap_downstream(html_down: str):
+    soup_down = BeautifulSoup(html_down, "lxml")
 
     td_list = list()  # receiver id, channel id, frequency, snr, power
     script_list = list()  # lock status, modulation, symbol rate
@@ -24,10 +23,10 @@ def scrap_downstream(html_down):
             st
         )  # todo translating TAG_UPC to text (only to unlocked/locked or from entire english.js?)
 
-    print(tdx_list)
-    print(script_list)
+    # print(tdx_list)
+    # print(script_list)
+
+    return tdx_list
 
 
 # soup_down.tbody.tr.script
-
-scrap_downstream("get_downstream.html")
