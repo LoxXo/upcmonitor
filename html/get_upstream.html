@@ -1,0 +1,261 @@
+$ curl -i http://192.168.42.1/status/connection-upstream.asp
+HTTP/1.1 200 OK
+Content-type: text/html
+Expires: -1
+Connection: close
+Cache-Control: no-cache
+Content-Length: 5946
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="/css/upc.css">
+    <script src="/language/english.js" type="text/javascript"></script>
+
+    <script src="/trans_func.js" type="text/javascript"></script>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <script>i18n_PageTitle("TAG_UPC_23 - UPC_Wireless_Cable_Router_Configuration_STATUS_Upstream")</script>
+</head>
+
+<!--[if !IE]><body><![endif]-->
+<!--[if IE 9]><body class="ie9"><![endif]-->
+<!--[if IE 8]><body class="ie8"><![endif]-->
+<!--[if IE 7]><body class="ie7"><![endif]-->
+<!--[if lt IE 7]><body><![endif]-->
+<div class="upc_container upc_container_12">
+    <div class="upc_grid_12">
+
+        <!--masthead-->
+        <div class="upc_masthead">
+            <!--top, contains logog ad languageswitch-->
+            <div class="top">
+                <img src="/media/img/upc_logo.png" width="64" height="59" class="logo" alt="upc">
+                <form action="/goform/languages" class="language_switch" method="POST">
+                    <input type="hidden" name="CSRFValueL" value=09411964>
+                    <label><a href="/logout.asp" class="logout_nolock">admin</a>&nbsp;&nbsp;
+                        <script>i18n("LOGIN_AREA_LANGUAGE=")</script>:
+                    </label>
+                    <select name="UpcLanguages" id="lang" onChange="this.form.submit()">
+                        <option value="1" selected>English</option>
+                        <option value="2">Nederlands</option>
+                        <option value="3">Deutsch</option>
+                        <option value="4">Türkçe</option>
+                        <option value="5">Français</option>
+                        <option value="6">Italiano</option>
+                        <option value="7">Magyar</option>
+                        <option value="8">Polski</option>
+                        <option value="9">Română</option>
+                        <option value="10">Čeština</option>
+                        <option value="11">Slovenčina</option>
+
+                    </select>
+                    <a href="/logout.asp" class="logout">
+                        <script>i18n("SPECIAL_PAGE_LOGIN_LOGOUT=")</script>
+                    </a>
+                </form>
+            </div>
+
+            <ul class="navigationbar">
+                <li><a href="#">
+                        <script>i18n("CONTENT_STATUS_MTA_STATUS_TITLE=")</script>
+                    </a></li>
+                <li><a href="/basic/internet.asp">
+                        <script>i18n("CONTENT_STATUS_CONNECTION_BASIC_TITLE=")</script>
+                    </a></li>
+                <li><a href="/advanced/options.asp">
+                        <script>i18n("LM_ENTRY_WIRELESS_2G_ADVANCED=")</script>
+                    </a></li>
+                <li><a href="/parental/device-rules.asp">
+                        <script>i18n("CONTENT_SYSTEM_LOG_CONFIG_MODULE_PARENTAL_CONTROL=")</script>
+                    </a></li>
+                <li><a href="/wireless/radio.asp">
+                        <script>i18n("CONTENT_SYSTEM_LOG_CONFIG_MODULE_WIRELESS=")</script>
+                    </a></li>
+
+                <li><a href="/system/password.asp">
+                        <script>i18n("CONTENT_STATUS_SYSTEM_TITLE=")</script>
+                    </a></li>
+            </ul>
+        </div>
+        <!--end masthead-->
+
+    </div>
+    <div class="clear">&nbsp;</div>
+    <div class="upc_grid_3">
+
+        <!--subnavigation-->
+        <ul class="upc_subnav">
+            <li><a href="/status/system.asp">
+                    <script>i18n("CONTENT_STATUS_SYSTEM_TITLE=")</script>
+                </a></li>
+            <li><a href="/status/connection-basic.asp" class="active">
+                    <script>i18n("LM_ENTRY_STATUS_CONNECTION=")</script>
+                </a>
+                <ul>
+                    <li><a href="/status/connection-basic.asp">
+                            <script>i18n("CONTENT_STATUS_CONNECTION_BASIC_TITLE=")</script>
+                        </a></li>
+                    <li><a href="#" class="active">
+                            <script>i18n("LM_ENTRY_STATUS_CONNECTION_UPSTREAM=")</script>
+                        </a></li>
+                    <li><a href="/status/connection-downstream.asp">
+                            <script>i18n("LM_ENTRY_STATUS_CONNECTION_DOWNSTREAM=")</script>
+                        </a></li>
+                </ul>
+            </li>
+            <li><a href="/status/mta.asp">
+                    <script>i18n("LM_ENTRY_STATUS_MTA=")</script>
+                </a>
+                <ul>
+                    <li><a href="/status/mta.asp">
+                            <script>i18n("CONTENT_STATUS_MTA_STATUS_TITLE=")</script>
+                        </a></li>
+                </ul>
+            </li>
+            <li><a href="/status/diagnostics-ping.asp">
+                    <script>i18n("LM_ENTRY_STATUS_DIAGNOSTIC=")</script>
+                </a>
+                <ul>
+                    <li><a href="/status/diagnostics-ping.asp">
+                            <script>i18n("LM_ENTRY_STATUS_DIAGNOSTIC_PING=")</script>
+                        </a></li>
+                    <li><a href="/status/diagnostics-route.asp">
+                            <script>i18n("LM_ENTRY_STATUS_DIAGNOSTIC_TRACEROUTE=")</script>
+                        </a></li>
+                </ul>
+            </li>
+        </ul>
+        <!--end subnavigation-->
+
+    </div>
+    <div class="upc_grid_9">
+
+        <h1>
+            <script>i18n("CONTENT_STATUS_MTA_STATUS_TITLE=")</script>
+        </h1>
+        <div class="upc_content_area">
+            <h2>
+                <script>i18n("CONTENT_STATUS_CONNECTION_US_TITLE=")</script>
+            </h2>
+            <p>
+                <script>i18n("CONTENT_STATUS_CONNECTION_US_DESCRIPTION=")</script>
+            </p>
+
+            <h3>
+                <script>i18n("CONTENT_STATUS_CONNECTION_US_TABLE_TITLE=")</script>
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_US_TRANSMITTER_NUM=")</script>
+                        </th>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_DS_CH_ID=")</script>
+                        </th>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_DS_LOCK_STATUS=")</script>
+                        </th>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_DS_FREQUENCY=")</script>
+                        </th>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_DS_MODULATION=")</script>
+                        </th>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_DS_SYMBOL_RATE=")</script>
+                        </th>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_US_CH_TYPE=")</script>
+                        </th>
+                        <th>
+                            <script>i18n("CONTENT_STATUS_CONNECTION_DS_POWER=")</script>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td>9</td>
+                        <td>
+                            <script>i18n("TAG_UPC_T38")</script>
+                        </td>
+                        <td>34300000</td>
+                        <td>
+                            <script>i18n("64QAM")</script>
+                        </td>
+                        <td>5120000</td>
+                        <td>
+                            <script>i18n("ATDMA")</script>
+                        </td>
+                        <td>42.0</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>13</td>
+                        <td>
+                            <script>i18n("TAG_UPC_T38")</script>
+                        </td>
+                        <td>61100000</td>
+                        <td>
+                            <script>i18n("64QAM")</script>
+                        </td>
+                        <td>5120000</td>
+                        <td>
+                            <script>i18n("ATDMA")</script>
+                        </td>
+                        <td>44.3</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>11</td>
+                        <td>
+                            <script>i18n("TAG_UPC_T38")</script>
+                        </td>
+                        <td>47700000</td>
+                        <td>
+                            <script>i18n("64QAM")</script>
+                        </td>
+                        <td>5120000</td>
+                        <td>
+                            <script>i18n("ATDMA")</script>
+                        </td>
+                        <td>42.5</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>12</td>
+                        <td>
+                            <script>i18n("TAG_UPC_T38")</script>
+                        </td>
+                        <td>54400000</td>
+                        <td>
+                            <script>i18n("64QAM")</script>
+                        </td>
+                        <td>5120000</td>
+                        <td>
+                            <script>i18n("ATDMA")</script>
+                        </td>
+                        <td>44.5</td>
+                    </tr>
+
+
+                    <!--and so on...-->
+                </tbody>
+            </table>
+
+
+            <div class="clear">&nbsp;</div>
+        </div>
+        <div class="upc_content_area_footer">&nbsp;</div>
+
+
+    </div>
+    <div class="clear">&nbsp;</div>
+</div>
+</body>
+
+</html>
