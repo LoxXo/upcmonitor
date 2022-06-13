@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from typing_extensions import Literal
 
 
-class ChannelData(BaseModel):
+class ChannelDataDown(BaseModel):
     receiver_id: int
     channel_id: int
     lock_status: Literal["Locked", "Unlocked"]
@@ -17,41 +17,111 @@ class ChannelData(BaseModel):
     power: float
 
 
+class ChannelDataUp(BaseModel):
+    transmitter_id: int
+    channel_id: int
+    lock_status: Literal["Locked", "Unlocked"]
+    frequency: int
+    modulation: str
+    symbol_rate: int
+    channel_type: str
+    power: float
+
+
 def scrap_downstream(html_down: str):
     soup_down = BeautifulSoup(html_down, "lxml")
-
-    td_list = list()  # receiver id, channel id, frequency, snr, power
-    script_list = list()  # lock status, modulation, symbol rate
-
-    for td in soup_down.find_all("td"):
-        td_list.append(td.text)
-    tdx_list = [x for idx, x in enumerate(td_list) if td_list[idx] != "\n\n"]
+    downchannels_data = list()
 
     tbody = soup_down.find("tbody")
     rows = tbody.find_all("tr")
     for row in rows:
         tds = row.find_all("td")
-        id = tds[0].text
-        channel = tds[1].text
+        receiver_id = tds[0].text
+        channel_id = tds[1].text
+
+        lock = tds[2]
+        lock_raw = lock.find("script").text
+        lock_raw = lock_raw.lstrip('i18n("').rstrip('")')
+        if lock_raw == "TAG_UPC_T38":
+            lock_raw = "Locked"
+        if lock_raw == "TAG_UPC_T39":
+            lock_raw = "Unlocked"
+
+        frequency = tds[3].text
+
+        modulation = tds[4]
+        modulation_raw = modulation.find("script").text
+        modulation_raw = modulation_raw.lstrip('i18n("').rstrip('")')
+
         rate = tds[5]
         symbol_raw = rate.find("script").text
-        symbol_raw.lstrip('i18n("').rstrip('")')
+        symbol_raw = symbol_raw.lstrip('i18n("').rstrip('")')
+
+        snr = tds[6].text
+
+        power = tds[7].text
+
+        downchannels_data.append(
+            ChannelDataDown(
+                receiver_id=receiver_id,
+                channel_id=channel_id,
+                lock_status=lock_raw,
+                frequency=frequency,
+                modulation=modulation_raw,
+                symbol_rate=symbol_raw,
+                snr=snr,
+                power=power,
+            )
+        )
+    print(downchannels_data)
+
+    return downchannels_data
 
 
-    script_tags = soup_down.find_all("script")
-    script_tags = script_tags[34:58]
-    for st in script_tags:
-        st = st.text
-        st = st.lstrip("i18n(")
-        st = st.rstrip(")")
-        script_list.append(
-            st
-        )  # todo translating TAG_UPC to text (only to unlocked/locked or from entire english.js?)
+def scrap_upstream(html_up: str):
+    soup_up = BeautifulSoup(html_up, "lxml")
+    upchannels_data = list()
 
-    # print(tdx_list)
-    # print(script_list)
+    tbody = soup_up.find("tbody")
+    rows = tbody.find_all("tr")
+    for row in rows:
+        tds = row.find_all("td")
+        transmitter_id = tds[0].text
+        channel_id = tds[1].text
 
-    return tdx_list
+        lock = tds[2]
+        lock_raw = lock.find("script").text
+        lock_raw = lock_raw.lstrip('i18n("').rstrip('")')
+        if lock_raw == "TAG_UPC_T38":
+            lock_raw = "Locked"
+        if lock_raw == "TAG_UPC_T39":
+            lock_raw = "Unlocked"
 
+        frequency = tds[3].text
 
-# soup_down.tbody.tr.script
+        modulation = tds[4]
+        modulation_raw = modulation.find("script").text
+        modulation_raw = modulation_raw.lstrip('i18n("').rstrip('")')
+
+        symbol_rate = tds[5].text
+
+        channel_type = tds[6]
+        channel_type_raw = channel_type.find("script").text
+        channel_type_raw = channel_type_raw.lstrip('i18n("').rstrip('")')
+
+        power = tds[7].text
+
+        upchannels_data.append(
+            ChannelDataUp(
+                transmitter_id=transmitter_id,
+                channel_id=channel_id,
+                lock_status=lock_raw,
+                frequency=frequency,
+                modulation=modulation_raw,
+                symbol_rate=symbol_rate,
+                channel_type=channel_type_raw,
+                power=power,
+            )
+        )
+    print(upchannels_data)
+    return upchannels_data
