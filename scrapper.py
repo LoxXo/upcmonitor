@@ -1,34 +1,11 @@
 from typing import List
-import secrets
+import datetime
 import requests
+import schemas, models, database, crud
 from bs4 import BeautifulSoup
-from pydantic import BaseModel
-from typing_extensions import Literal
 
 
-class ChannelDataDown(BaseModel):
-    receiver_id: int
-    channel_id: int
-    lock_status: Literal["Locked", "Unlocked"]
-    frequency: int
-    modulation: str
-    symbol_rate: int
-    snr: float
-    power: float
-
-
-class ChannelDataUp(BaseModel):
-    transmitter_id: int
-    channel_id: int
-    lock_status: Literal["Locked", "Unlocked"]
-    frequency: int
-    modulation: str
-    symbol_rate: int
-    channel_type: str
-    power: float
-
-
-def scrap_downstream(html_down: str) -> List[ChannelDataDown]:
+def scrap_downstream(html_down: str) -> List[schemas.ChannelDataDown]:
     soup_down = BeautifulSoup(html_down, "lxml")
     downchannels_data = list()
 
@@ -62,7 +39,7 @@ def scrap_downstream(html_down: str) -> List[ChannelDataDown]:
         power = tds[7].text
 
         downchannels_data.append(
-            ChannelDataDown(
+            schemas.ChannelDataDown(
                 receiver_id=receiver_id,
                 channel_id=channel_id,
                 lock_status=lock_raw,
@@ -77,7 +54,7 @@ def scrap_downstream(html_down: str) -> List[ChannelDataDown]:
     return downchannels_data
 
 
-def scrap_upstream(html_up: str) -> List[ChannelDataUp]:
+def scrap_upstream(html_up: str) -> List[schemas.ChannelDataUp]:
     soup_up = BeautifulSoup(html_up, "lxml")
     upchannels_data = list()
 
@@ -111,7 +88,7 @@ def scrap_upstream(html_up: str) -> List[ChannelDataUp]:
         power = tds[7].text
 
         upchannels_data.append(
-            ChannelDataUp(
+            schemas.ChannelDataUp(
                 transmitter_id=transmitter_id,
                 channel_id=channel_id,
                 lock_status=lock_raw,
@@ -132,7 +109,7 @@ def check_if_on_loginpage(url_check: str) -> bool:
     loginpage = BeautifulSoup(url_check_response.text, "lxml")
     check_loginpage = loginpage.find("h2")
     # can use better idea: same heading as on page if other user is logged in,
-    # can check for labels, but its slower as needs iterate:
+    # can check for labels, but its slower as needs to iterate:
     # example of unique line: <label for="user"> <script>i18n("LOGIN_BOX_LOGIN_LABEL=")</script>
     # </label> <input id="loginUsername" name="loginUsername" type="text" value=""/> <div class="clear"> </div>
     if (
@@ -143,7 +120,7 @@ def check_if_on_loginpage(url_check: str) -> bool:
         return False
 
 
-def login_into() -> None:  # requests.Session()?
+def login_into() -> None:
     print('Trying to login...')
     url_login = 'http://192.168.42.1/goform/login'
     s = requests.get('http://192.168.42.1/login.asp')
@@ -212,11 +189,31 @@ def request_upstream() -> str:
         print("Whooops something else:", err)
     return response_up.text
 
+def create_entry() -> schemas.EntryData:
+    entry_datetime = datetime.datetime.now()
+    return schemas.EntryData(id=1, timestamp=entry_datetime)
+
+# Create and commit EntryData and ChannelDataUp/Down with relation by id
+def transaction_full(downstream: List[schemas.ChannelDataDown], upstream: List[schemas.ChannelDataUp]):
+    new_entry = create_entry()
+    with database.SessionLocal.begin():
+        last_entry = crud.create_entrydata(database.sessionlocal, new_entry)
+        for row_down in downstream:
+            crud.create_downstreamdata(database.sessionlocal, row_down, last_entry.id)
+        for row_up in upstream:
+            crud.create_upstreamdata(database.sessionlocal, row_up, last_entry.id)
+
+
 if __name__ == "__main__":
+    database.create_tables()
     resp_up = request_upstream()
-    scrap_upstream(resp_up)
+    up = scrap_upstream(resp_up)
     
     resp_down = request_downstream()
-    scrap_downstream(resp_down)
+    down = scrap_downstream(resp_down)
 
-    #login_into()
+    transaction_full(down, up)
+
+    # downdata1 = models.ChannelDataDownOrm(downtext[0])
+    # print(downdata1)
+    # downdata1_model = schemas.ChannelDataDown.from_orm(downdata1)
