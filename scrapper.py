@@ -1,7 +1,9 @@
 from typing import List
 import datetime
 import requests
-import schemas, models, database, crud
+import schemas
+import database
+import crud
 from bs4 import BeautifulSoup
 
 
@@ -50,7 +52,7 @@ def scrap_downstream(html_down: str) -> List[schemas.ChannelDataDown]:
                 power=power,
             )
         )
-    print(downchannels_data)
+    # print(downchannels_data)
     return downchannels_data
 
 
@@ -99,7 +101,7 @@ def scrap_upstream(html_up: str) -> List[schemas.ChannelDataUp]:
                 power=power,
             )
         )
-    print(upchannels_data)
+    # print(upchannels_data)
     return upchannels_data
 
 
@@ -108,13 +110,9 @@ def check_if_on_loginpage(url_check: str) -> bool:
     url_check_response = requests.get(url_check, timeout=10)
     loginpage = BeautifulSoup(url_check_response.text, "lxml")
     check_loginpage = loginpage.find("h2")
-    # can use better idea: same heading as on page if other user is logged in,
-    # can check for labels, but its slower as needs to iterate:
-    # example of unique line: <label for="user"> <script>i18n("LOGIN_BOX_LOGIN_LABEL=")</script>
-    # </label> <input id="loginUsername" name="loginUsername" type="text" value=""/> <div class="clear"> </div>
     if (
         str(check_loginpage) == loginpage_str_to_compare
-    ):  
+    ):
         return True
     else:
         return False
@@ -136,7 +134,6 @@ def login_into() -> None:
         'logoffUser': '0',
     }
     headers = {
-        #"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36",
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.5',
         'Accept-Encoding': 'gzip, deflate',
@@ -155,10 +152,11 @@ def login_into() -> None:
 
     print(f"Logged in successfully with status: {logged_url.status_code}")
 
+
 def request_downstream() -> str:
     url_downstream = "http://192.168.42.1/status/connection-downstream.asp"
     print("Requesting data from downstream.asp...")
-    if check_if_on_loginpage(url_downstream) == True:
+    if check_if_on_loginpage(url_downstream) is True:
         print('Not logged in')
         login_into()
     try:
@@ -172,10 +170,11 @@ def request_downstream() -> str:
         print("Whooops something else:", err)
     return response_down.text
 
+
 def request_upstream() -> str:
     url_upstream = "http://192.168.42.1/status/connection-upstream.asp"
     print("Requesting data from upstream.asp...")
-    if check_if_on_loginpage(url_upstream) == True:
+    if check_if_on_loginpage(url_upstream) is True:
         print('Not logged in')
         login_into()
     try:
@@ -189,9 +188,11 @@ def request_upstream() -> str:
         print("Whooops something else:", err)
     return response_up.text
 
+
 def create_entry() -> schemas.EntryData:
-    entry_datetime = datetime.datetime.now()
+    entry_datetime = datetime.datetime.now(datetime.timezone.utc)
     return schemas.EntryData(id=1, timestamp=entry_datetime)
+
 
 # Create and commit EntryData and ChannelDataUp/Down with relation by id
 def transaction_full(downstream: List[schemas.ChannelDataDown], upstream: List[schemas.ChannelDataUp]):
@@ -208,12 +209,6 @@ if __name__ == "__main__":
     database.create_tables()
     resp_up = request_upstream()
     up = scrap_upstream(resp_up)
-    
     resp_down = request_downstream()
     down = scrap_downstream(resp_down)
-
     transaction_full(down, up)
-
-    # downdata1 = models.ChannelDataDownOrm(downtext[0])
-    # print(downdata1)
-    # downdata1_model = schemas.ChannelDataDown.from_orm(downdata1)
