@@ -194,7 +194,7 @@ def create_entry() -> schemas.EntryData:
     return schemas.EntryData(id=1, timestamp=entry_datetime)
 
 
-# Create and commit EntryData and ChannelDataUp/Down with relation by id
+# Create and commit EntryData and ChannelDataUp/Down with relation by entry.id
 def transaction_full(downstream: List[schemas.ChannelDataDown], upstream: List[schemas.ChannelDataUp]):
     new_entry = create_entry()
     with database.SessionLocal.begin():
@@ -211,4 +211,5 @@ if __name__ == "__main__":
     up = scrap_upstream(resp_up)
     resp_down = request_downstream()
     down = scrap_downstream(resp_down)
+    database.create_tables()
     transaction_full(down, up)
