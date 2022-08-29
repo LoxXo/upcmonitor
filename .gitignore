@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 notatka.txt
+secrets.py
+requirements.in
