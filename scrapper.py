@@ -211,5 +211,4 @@ if __name__ == "__main__":
     up = scrap_upstream(resp_up)
     resp_down = request_downstream()
     down = scrap_downstream(resp_down)
-    database.create_tables()
     transaction_full(down, up)
