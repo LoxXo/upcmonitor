@@ -3,8 +3,6 @@ import schemas
 import models
 
 
-# Create down/n upstreamdata entry_id_new must be created from entry.id
-# and used on the same time to have correct entry.timestamp from datetime
 def create_downstreamdata(db: Session, downstream: schemas.ChannelDataDown, entry_id_new: int):
     db_downstream = models.ChannelDataDownOrm(**downstream.dict(), entry_id=entry_id_new)
     db.add(db_downstream)

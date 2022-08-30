@@ -6,6 +6,9 @@ import database
 import crud
 from bs4 import BeautifulSoup
 
+# data source router's ip
+router_ip = '192.168.42.1'
+
 
 def scrap_downstream(html_down: str) -> List[schemas.ChannelDataDown]:
     soup_down = BeautifulSoup(html_down, "lxml")
@@ -120,8 +123,8 @@ def check_if_on_loginpage(url_check: str) -> bool:
 
 def login_into() -> None:
     print('Trying to login...')
-    url_login = 'http://192.168.42.1/goform/login'
-    s = requests.get('http://192.168.42.1/login.asp')
+    url_login = (f'http://{router_ip}/goform/login')
+    s = requests.get(f'http://{router_ip}/login.asp')
     st = s.text
     stx = BeautifulSoup(st, "lxml")
     csrf = str(stx.find("input"))
@@ -137,9 +140,9 @@ def login_into() -> None:
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.5',
         'Accept-Encoding': 'gzip, deflate',
-        'Origin': 'http://192.168.42.1',
+        'Origin': f'http://{router_ip}',
         'Connection': 'keep-alive',
-        'Referer': 'http://192.168.42.1/',
+        'Referer': f'http://{router_ip}',
         'Upgrade-Insecure-Requests': '1',
         'DNT': '1',
         'Sec-GPC': '1',
@@ -148,16 +151,16 @@ def login_into() -> None:
     try:
         logged_url.raise_for_status
     except requests.exceptions.RequestException as err:
-        print("Whoops! Some error occurred during login", err)
+        print('Whoops! Some error occurred during login', err)
 
     print(f"Logged in successfully with status: {logged_url.status_code}")
 
 
 def request_downstream() -> str:
-    url_downstream = "http://192.168.42.1/status/connection-downstream.asp"
+    url_downstream = f"http://{router_ip}/status/connection-downstream.asp"
     print("Requesting data from downstream.asp...")
     if check_if_on_loginpage(url_downstream) is True:
-        print('Not logged in')
+        print("Not logged in.")
         login_into()
     try:
         response_down = requests.get(url_downstream, timeout=10)
@@ -172,10 +175,10 @@ def request_downstream() -> str:
 
 
 def request_upstream() -> str:
-    url_upstream = "http://192.168.42.1/status/connection-upstream.asp"
+    url_upstream = f"http://{router_ip}/status/connection-upstream.asp"
     print("Requesting data from upstream.asp...")
     if check_if_on_loginpage(url_upstream) is True:
-        print('Not logged in')
+        print("Not logged in")
         login_into()
     try:
         response_up = requests.get(url_upstream, timeout=10)
@@ -194,8 +197,8 @@ def create_entry() -> schemas.EntryData:
     return schemas.EntryData(id=1, timestamp=entry_datetime)
 
 
-# Create and commit EntryData and ChannelDataUp/Down with relation by entry.id
 def transaction_full(downstream: List[schemas.ChannelDataDown], upstream: List[schemas.ChannelDataUp]):
+    """Create and commit EntryData and ChannelDataUp/Down with relation by entry.id"""
     new_entry = create_entry()
     with database.SessionLocal.begin():
         last_entry = crud.create_entrydata(database.sessionlocal, new_entry)

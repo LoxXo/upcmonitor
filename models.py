@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 
-print('creating base')
+print('creating base...')
 Base = declarative_base()
 
 
