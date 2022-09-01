@@ -123,6 +123,3 @@ And to automatically start on boot:
 ```
 $ systemctl enable upcmonitor.timer
 ```
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
