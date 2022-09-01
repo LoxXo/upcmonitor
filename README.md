@@ -16,12 +16,12 @@ Script runs from `scrapper.py` file.
 
 ## Configuration
 
-Clone this repositorium to your Linux system:
+1. Clone this repositorium to your Linux system:
 ```
 $ git clone https://github.com/LoxXo/upcmonitor.git
 ```
 
-* Change `router_ip=` and `logoff_user=` in `scrapper.py` file:
+2. Change `router_ip=` and `logoff_user=` in `scrapper.py` file:
 ```py
 router_ip = '192.168.1.1'
 ```
@@ -30,7 +30,7 @@ logoff_user = 0
 ```
 When `logoff_user=` is set to 1, during script login it will force log off any current users in router's panel.
 
-* Also `SQLALCHEMY_DATABASE_URL=` and `schema_name=` in `database.py` files: 
+3. Also `SQLALCHEMY_DATABASE_URL=` and `schema_name=` in `database.py` files: 
 
 ```
 SQLALCHEMY_DATABASE_URL = "dialect+driver://username:password@host:port/database"
