@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 
 # data source router's ip
 router_ip = '192.168.42.1'
+# 1 to make script log out any users from router panel during it login
+logoff_user = 0
 
 
 def scrap_downstream(html_down: str) -> List[schemas.ChannelDataDown]:
@@ -134,7 +136,7 @@ def login_into() -> None:
         'CSRFValue': f'{csrf}',
         'loginUsername': 'admin',
         'loginPassword': 'admin',
-        'logoffUser': '0',
+        'logoffUser': f'{logoff_user}',
     }
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
