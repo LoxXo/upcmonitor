@@ -28,6 +28,8 @@ router_ip = '192.168.1.1'
 ```py
 logoff_user = 0
 ```
+When `logoff_user=` is set to 1, during script login it will force log off any current users in router's panel.
+
 * Also `SQLALCHEMY_DATABASE_URL=` and `schema_name=` in `database.py` files: 
 
 ```
