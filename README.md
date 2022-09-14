@@ -3,7 +3,7 @@
 
 UPC Monitor is scraper for upstream and downstream status from Technicolor TC7200 router with UPC control panel. Intended to use with PostgreSQL and Grafana for data collection and visualization. It assumes use of the Linux's systemd service timer to run a code at regular intervals.
 
-One month of data collected every 15 minutes takes ~67MB of disk space in PostgreSQL.
+One month of data collected every 15 minutes takes ~75MB of disk space in PostgreSQL.
 
 Script runs from `scrapper.py` file.
 
