@@ -92,9 +92,6 @@ Wants=upcmonitor.timer
 User=user
 Type=oneshot
 ExecStart=/usr/bin/python3 '/path/to/scrapper.py'
-
-[Install]
-WantedBy=multi-user.target
 ```
 You'll have to:
 * type your username after `User=`,
