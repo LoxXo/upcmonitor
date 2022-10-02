@@ -81,7 +81,7 @@ To import dashboard from project's JSON file after logging in:
 
 
 
-## Creating a service
+## Creating a systemd unit
 1. If you want to use it as timed service, create file named `/etc/systemd/system/upcmonitor.service`:
 ```
 [Unit]
