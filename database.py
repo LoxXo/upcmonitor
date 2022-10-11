@@ -4,10 +4,10 @@ from sqlalchemy.orm import sessionmaker
 from schemas import Base
 
 # set database URL like 'dialect+driver://username:password@host:port/database'
-_SQLALCHEMY_DATABASE_URL = 'postgresql+psycopg2://upcmonitor:upcmonitor123@192.168.43.5:5432/upc'
+_SQLALCHEMY_DATABASE_URL = 'postgresql+psycopg2://upcmonitor:pass123@192.168.1.1:5432/upc'
 
 # name of PostgreSQL schema
-_SCHEMA_NAME = 'upclive'
+_SCHEMA_NAME = 'nameofschema'
 
 _engine = create_engine(
     _SQLALCHEMY_DATABASE_URL
