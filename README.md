@@ -21,22 +21,28 @@ Script runs from `scrapper.py` file.
 $ git clone https://github.com/LoxXo/upcmonitor.git
 ```
 
-2. Change `router_ip=` and `logoff_user=` in `scrapper.py` file:
+2. Change `_LOGOFF_USER=`, `_ROUTER_LOGIN=`, `_ROUTER_PASSWORD=` and `_LOGOFF_USER=` in `scrapper.py` file:
 ```py
-router_ip = '192.168.1.1'
+_ROUTER_IP = '192.168.1.1'
 ```
 ```py
-logoff_user = 0
+_ROUTER_LOGIN = 'admin'
 ```
-When `logoff_user=` is set to 1, during script login it will force log off any current users in router's panel.
+```py
+_ROUTER_PASSWORD= = 'admin'
+```
+```py
+_LOGOFF_USER = 0
+```
+When `_LOGOFF_USER=` is set to 1, during script login it will force log off any current users in router's panel.
 
-3. Also `SQLALCHEMY_DATABASE_URL=` and `schema_name=` in `database.py` files: 
+3. Also `SQLALCHEMY_DATABASE_URL=` and `_SCHEMA_NAME=` in `database.py` files: 
 
 ```
-SQLALCHEMY_DATABASE_URL = "dialect+driver://username:password@host:port/database"
+_SQLALCHEMY_DATABASE_URL = "dialect+driver://username:password@host:port/database"
 ```
 ```py
-schema_name = "nameofschema"
+_SCHEMA_NAME = "nameofschema"
 ```
 
 ## Python modules installation
@@ -60,10 +66,13 @@ Create database and schema you want to use. Tables will be created after running
 Required users with privileges in schema:
 
 1. upcmonitor:
-   * INSERT
+   * CONNECT
    * SELECT
+   * INSERT
+   * CREATE
    * REFERENCES
 2. grafana:
+   * CONNECT
    * SELECT
 
 
@@ -95,12 +104,12 @@ ExecStart=/usr/bin/python3 '/path/to/scrapper.py'
 ```
 You'll have to:
 * type your username after `User=`,
-* set the current path to script after `ExecStart=`.
+* set the current path to python and script after `ExecStart=`.
 
 2. Next in same directory create timer for service `upcmonitor.timer`:
 ```
 [Unit]
-Description=run upcmonitor once per 15 minutes
+Description=Runs upcmonitor once per 15 minutes
 
 [Timer]
 Unit=upcmonitor.service
