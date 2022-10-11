@@ -11,7 +11,7 @@ import crud
 
 
 # data source router's ip and login
-_ROUTER_IP = '192.168.42.1'
+_ROUTER_IP = '192.168.1.1'
 _ROUTER_LOGIN = 'admin'
 _ROUTER_PASSWORD = 'admin'
 
