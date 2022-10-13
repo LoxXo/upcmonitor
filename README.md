@@ -1,7 +1,7 @@
 ![image](https://i.imgur.com/bcvzkwa.jpg)
 # UPC Monitor
 
-UPC Monitor is a scraper for upstream and downstream status data from Technicolor TC7200 router with the UPC control panel. Intended to use with PostgreSQL and Grafana for data collection and visualization. It assumes use of the Linux's systemd service timer to run a code at regular intervals.
+UPC Monitor is a scraper for upstream and downstream status data from the Technicolor TC7200 router with the UPC control panel. Intended to use with PostgreSQL and Grafana for data collection and visualization. It assumes use of the Linux's systemd service timer to run a code at regular intervals.
 
 One month of data collected every 15 minutes takes ~75MB of disk space when consolidated in PostgreSQL.
 
@@ -34,7 +34,7 @@ _ROUTER_PASSWORD= = 'admin'
 ```py
 _LOGOFF_USER = 0
 ```
-When `_LOGOFF_USER=` is set to 1, during script login it will force log off any current users in router's panel.
+When `_LOGOFF_USER=` is set to 1, during script login it will force any current users in router's panel to log off.
 
 3. Also `SQLALCHEMY_DATABASE_URL=` and `_SCHEMA_NAME=` in `database.py` files: 
 
@@ -48,7 +48,7 @@ _SCHEMA_NAME = "nameofschema"
 ## Python modules installation
 Make sure you have Python3 installed on your system.
 
-When in UPC Monitor directory type in terminal:
+When in the UPC Monitor directory type in a terminal:
 ```bash
 $ pip install -r requirements.txt
 ```
@@ -84,14 +84,14 @@ Required users with privileges in schema:
 
 To import dashboard from project's JSON file after logging in:
 
-1. From left bar choose **Dashboards** and then **Import**.
+1. From the left bar choose **Dashboards** and then **Import**.
 2. Click **Upload JSON file** and select `Grafana-UPC-Monitor.json` file.
-3. After loading it you should see a dashboard same as on screenshot above. Use it as is or modify to fit your needs.
+3. After loading it you should see a dashboard the same as on screenshot above. Use it as it is or modify to fit your needs.
 
 
 
 ## Creating a systemd unit
-1. If you want to use it as timed service, create file named `/etc/systemd/system/upcmonitor.service`:
+1. If you want to use it as a timed service, create a file named `/etc/systemd/system/upcmonitor.service`:
 ```
 [Unit]
 Description=UPC router stats scrapper with Postgres
@@ -118,7 +118,7 @@ OnCalendar=*:0/15
 [Install]
 WantedBy=timers.target
 ```
-In example `OnCalendar=` is set to every hour plus multiples of 15 minutes. Setting it to, e.g. `*0:0/1:00` would make it run every hour.
+In the example `OnCalendar=` is set to every hour plus multiples of 15 minutes. Setting it to, e.g. `*0:0/1:00` would make it run every hour.
 
 More on [systemd timers](https://wiki.archlinux.org/title/systemd/Timers).
 
