@@ -94,7 +94,7 @@ To import dashboard from project's JSON file after logging in:
 1. If you want to use it as a timed service, create a file named `/etc/systemd/system/upcmonitor.service`:
 ```
 [Unit]
-Description=UPC router stats scrapper with Postgres
+Description=UPC router stats scraper with Postgres
 Wants=upcmonitor.timer
 
 [Service]
